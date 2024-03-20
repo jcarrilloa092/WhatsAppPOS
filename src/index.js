@@ -1,12 +1,20 @@
 const express = require('express');
-const messageRouter = require('./routers/messageRouter');
 const whatsappClient = require('./services/WhatsappClient');
-
-whatsappClient.initialize();
+const messageRouter = require('./routes/message.routes');
 
 const app = express();
 
-
+// Configuración de middlewares para poder generar los json que se enviaran a la api.
 app.use(express.json());
+
+// Configuración de rutas
 app.use(messageRouter);
-app.listen(3000, () => console.log('Server is ready!'));
+
+// Iniciar el cliente de WhatsApp
+whatsappClient.initialize();
+
+// Iniciar el servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor en ejecución en el puerto ${PORT}`);
+});
